@@ -110,7 +110,7 @@
             entityManager.close(); // EntityManager 닫음
         }
 ```
-
+---
 ### 정리
 
 - 기본 구조
@@ -125,3 +125,53 @@
 - 영속 컨텍스트
   - 엔티티를 메모리에 보관
   - 변경을 추적해서 트랜잭션 커밋 시점에 DB에 반영
+---
+## lec 3
+
+### IntelliJ IDEA에서 MySQL 데이터베이스와 연결하기
+
+1. Database Tool Window 열기:
+
+- IntelliJ IDEA의 우측 하단에 있는 Database 탭을 클릭합니다. 만약 이 탭이 보이지 않는다면, View -> Tool Windows -> Database를 선택하여 열 수 있습니다.
+
+2. 데이터베이스 드라이버 설정:
+
+- 데이터베이스 도구 창에서 + 아이콘을 클릭하고 Data Source -> MySQL을 선택합니다.
+- Download missing driver files 버튼이 나타나면 클릭하여 필요한 MySQL 드라이버를 다운로드합니다.
+
+3. 데이터베이스 연결 설정:
+
+- Host: localhost (또는 데이터베이스 서버의 IP 주소)
+- Port: 3306 (기본 MySQL 포트)
+- Database: jpabegin (사용할 데이터베이스 이름)
+- User: root (MySQL 사용자 이름)
+- Password: 1157139 (MySQL 사용자 비밀번호)
+
+4. 연결 테스트:
+
+- 모든 정보를 입력한 후 Test Connection 버튼을 클릭하여 연결이 정상적으로 설정되었는지 확인합니다.
+- 연결이 성공하면 OK 버튼을 클릭하여 설정을 저장합니다.
+
+5. 쿼리 실행:
+
+- Ctrl + Enter (또는 Cmd + Enter on Mac)를 눌러 쿼리를 실행하고 결과를 확인할 수 있습니다.
+
+---
+
+### main 을 실행했을 때 한글로 보이지 않는 경우
+
+- 인코딩 문제이다.
+  
+- help - Edic Custom VM Options
+  - `-Dfile.encoding=UTF-8` 추가
+- 인텔리제이 재부팅
+---
+
+### 정리
+
+- EntityManager를 사용해서 엔티티 단위로 CRUD 처리
+- 변경은 트랜잭션 범위 안에서 실행
+  - persist()
+  - 수정
+  - remove()
+---
