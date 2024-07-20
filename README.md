@@ -84,3 +84,44 @@
         </persistence-unit>
     </persistence>
     ```
+---
+## lec 2
+
+```java
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpabegin");
+        // 영속 단위 기준으로 초기화
+        // 필요한 자원 생성
+
+        EntityManager entityManager = emf.createEntityManager(); // EntityManager 생성
+        
+        EntityTransaction transaction = entityManager.getTransaction(); // EntityTransaction 구함
+
+        //트랜잭션 시작
+        try {
+            transaction.begin();
+
+            // ... entityManager로 DB 작업
+
+            transaction.commit(); // 트랜잭션 커밋
+
+        } catch (Exception ex) {
+            transaction.rollback(); // 트랜잭션 롤백
+        } finally {
+            entityManager.close(); // EntityManager 닫음
+        }
+```
+
+### 정리
+
+- 기본 구조
+  - EntityManagerFactory 초기화
+  - DB 작업시 필요할 때마다
+    - EntityManager 생성
+    - EntityManager로 DB 조작
+    - EntityTransaction으로 트랜잭션 관리
+  - 하지만 스프링과 연동할 때는
+    - 대부분 스프링이 대신 처리하므로 매핑 설정 중심으로 작업
+
+- 영속 컨텍스트
+  - 엔티티를 메모리에 보관
+  - 변경을 추적해서 트랜잭션 커밋 시점에 DB에 반영

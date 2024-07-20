@@ -6,11 +6,9 @@ import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 import jpabasic.reserve.domain.User;
 
-public class UserGetMain {
+public class UserUpdateMain {
     public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpabegin");
-        // 영속 단위 기준으로 초기화
-        // 필요한 자원 생성
         EntityManager entityManager = emf.createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
 
@@ -20,8 +18,8 @@ public class UserGetMain {
             if (user == null) {
                 System.out.println("User 없음");
             } else {
-                System.out.printf("User 있음: email=%s, name=%s, createDate=%s\n",
-                        user.getEmail(), user.getName(), user.getCreateDate());
+                String newName = "이름 " + (System.currentTimeMillis() % 100);
+                user.changeName(newName);
             }
             transaction.commit();
         } catch (Exception ex) {
