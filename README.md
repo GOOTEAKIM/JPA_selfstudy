@@ -1,4 +1,4 @@
-# 7/19
+# 7/20
 
 ## lec 1
 
@@ -174,4 +174,118 @@
   - persist()
   - 수정
   - remove()
+---
+
+## lec 4
+
+### 엔티티 매핑
+
+- 기본 애노테이션
+
+    - @Entity : 엔티티 클래스에 설정, 필수
+    - @Table : 매핑할 테이블 지정
+    - @Id : 식별자 속성에 설정, 필수
+    - @Column : 매핑할 칼럼명 지정
+      - 지정하지 않으면 필드면/프로퍼티명 사용
+    - @Enumerated : enum 타입 매핑할 때 설정
+
+- @Table
+  - 애노테이션을 생략하면 클래스 이름과 동일한 이름에 매핑
+  - 속성
+    - name : 테이블 이름 (생략하면 클래스 이름과 동일한 이름)
+    - catalog : 카탈로그 이름 (ex. MySQL DB 이름)
+    - schema : 스키마 이름 (예, 오라클 스키마 이름)
+
+  - 예
+    - @Table
+    - @Table(name="hotel_info")
+    - @Table(catalog="point", name = "point_history")
+    - @Table(schema="crm", name = "cust_stat")
+
+- @Enumeratd
+  - 열거 타입을 매핑할 때 사용
+  - 설정 값
+    - EnumType.STRING : enum 타입 값 이름을 저장
+      - 문자열 타입 칼럼에 매핑
+    - EnumType.ORDINAL(기본값) : enum 타입의 값의 순서를 저장
+      - 숫자 타입 칼럼에 매핑
+---
+### 매핑 예시
+
+```java
+@Entity // 매핑 대상 엔티티
+@Table(name = "hotel_info") // hotel_info 테이블에 매핑
+public class Hotel {
+
+    @Id // 식별자로 매핑
+    @Column(name = "hotel_id") // hotel_id 칼럼에 매핑
+    private String id;
+
+    @Column(name = "nm") // nm 칼럼에 매핑
+    private String name;
+    
+    private int year; // year 칼럼에 매핑
+    
+    @Enumerated(EnumType.STRING) //열거타입 이름을 값으로 저장
+    private Grade grade; // grade 칼럼에 매핑
+     
+    private LocalDateTime created; // created 칼럼에 매핑
+    
+    @Column(name = "modified") // modified 칼럼에 매핑
+    private LocalDateTime lastModified;
+
+    // ... 생성자, getter
+}
+```
+---
+### 엔티티 클래스 제약 조건 (스펙 기준)
+
+- @Entity 사용
+- @Id 사용
+- 인자 없는 기본 생성자 필요
+- 기본 생성자는 public, protected
+- 최상위 클래스여야 함
+- final 이면 안됨
+
+    ```java
+    @Entity 
+    @Table(name = "hotel_info") 
+    public class Hotel {
+
+        @Id // 식별자로 매핑
+        @Column(name = "hotel_id") 
+        private String id;
+
+        protected Hotel() {
+            // 인자 없는 기본 생성자
+        }
+        // ...
+        // ...
+    }
+    ```
+---
+### 접근 타입
+
+- 두 개 접근 타입
+  - 필드 접근 : 필드 값을 사용해서 매핑
+  - 프로퍼티 접근 : getter/setter 메서드를 사용해서 매핑
+
+- 설정 방법
+  - @Id를 필드에 붙이면 필드 접근
+  - @Id를 getter 메서드에 붙이면 프로퍼티 접근
+  - @Access를 사용해서 명시적으로 지정
+    - 클래스/개별 필드에 적용 가능
+    - @Access(AccessType.PROPERTY) / @Access(AccessType.FIELD)
+
+- 필드 접근 선호
+  - 불필요한 setter 메서드를 만들 필요 없음
+---
+### 정리
+
+- 주요 매핑 애노테이션
+  - @Entity, @Table, @Id, @Column, @Enumerated
+- 엔티티 클래스 제약
+  - 기본 생성자 필요 등 몇 가지 제약 있음
+- 접근 타입
+  - 필드 접근(*), 프로퍼티 접근
 ---
