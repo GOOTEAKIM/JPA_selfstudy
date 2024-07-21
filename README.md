@@ -343,3 +343,51 @@ public class Hotel {
 - 즉, 이 필드는 다른 엔티티의 일부로 포함된 값 타입을 나타냅니다.
 
 ---
+
+## lec 7
+
+### @SecondaryTable + 테이블 명
+
+```java
+@Entity
+@Table(name = "writer")
+@SecondaryTables({
+        @SecondaryTable(name = "writer_address",
+                pkJoinColumns = @PrimaryKeyJoinColumn(name = "writer_id", referencedColumnName = "id")
+
+        ),
+        @SecondaryTable(name = "writer_intro",
+                pkJoinColumns = @PrimaryKeyJoinColumn(name = "writer_id", referencedColumnName = "id")
+        )}
+)
+public class Writer {
+    // ...
+    // ...
+    @Embedded
+    private Intro intro;
+
+```
+---
+
+### @SecondaryTable + @AttributeOverride
+
+```java
+@Entity
+@Table(name = "writer")
+@SecondaryTables({
+        @SecondaryTable(name = "writer_address",
+                pkJoinColumns = @PrimaryKeyJoinColumn(name = "writer_id", referencedColumnName = "id")
+        )
+)
+public class Writer {
+    // ...
+    // ...
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "address1", column = @Column(table = "writer_address", name = "addr1")),
+            @AttributeOverride(name = "address2", column = @Column(table = "writer_address", name = "addr2")),
+            @AttributeOverride(name = "zipcode", column = @Column(table = "writer_address"))
+    })
+    private Address address;
+```
+---
